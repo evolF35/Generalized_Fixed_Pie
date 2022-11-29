@@ -72,6 +72,9 @@ contract GenPool {
         return(oracle.getLatestPrice());
     }
 
+    function getSettled() public view returns (bool){
+        return(settled);
+    }
 
     POS public positiveSide;
     NEG public negativeSide;
@@ -85,7 +88,6 @@ contract GenPool {
         positiveSide = new POS("OVER");
         negativeSide = new NEG("UNDER");
         oracle = new useChainLink(_oraclAddr);
-
 
         condition = false;
         settled = false;

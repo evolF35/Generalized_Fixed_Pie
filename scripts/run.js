@@ -8,15 +8,12 @@ async function main() {
     const [owner, randomPerson] = await hre.ethers.getSigners();
     const lockedAmount = hre.ethers.utils.parseEther("0.1");
 
-    const Lock = await hre.ethers.getContractFactory("Pool");
-    const lock = await Lock.deploy();    
+    const Lock = await hre.ethers.getContractFactory("GenPool");
+
+    const lock = await Lock.deploy("0x48731cF7e84dc94C5f84577882c14Be11a5B7456",6,1669716644);    
 
     await lock.deployed();
   
-    //let gsUsed = BigInt(lock.deployed().cumulativeGasUsed) * BigInt(lock.deployed().effectiveGasPrice);
-
-    //const gsUsed = BigInt(receipt.cumulativeGasUsed) * BigInt(receipt.effectiveGasPrice);
-
     console.log(
       `deployed to ${lock.address}`
       );
@@ -34,22 +31,9 @@ async function main() {
     contractBal = await hre.ethers.provider.getBalance(lock.address);
     console.log(contractBal);
 
-    let settle = await lock.pastSettlementDate();
-    console.log(settle);
-
-    await lock.changeSettlementDate();
-
-    settle = await lock.pastSettlementDate();
-    console.log(settle);
-
-    let pos = await lock.getAllowancePOS();
-    console.log(pos);
-
-    await lock.approveWithPOS();
-
-    pos = await lock.getAllowancePOS();
-    console.log(pos);
-
+    let txn4 = await lock.changeSettlementDate();
+    txn4 = await lock.settle();
+    
 }
 
 
