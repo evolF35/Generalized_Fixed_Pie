@@ -110,10 +110,14 @@ contract GenPool {
 
     function settle() public {
         require(block.timestamp > settlementDate, "too early");
+        require(settled == false, "already settled");
         int256 price = oracle.getLatestPrice();
 
         if(price >= settlementPrice){
             condition = true;
+        }
+        else{
+            condition = false;
         }
 
         settled = true;
